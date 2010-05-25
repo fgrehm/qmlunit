@@ -19,4 +19,9 @@ FORMS    +=
 
 OTHER_FILES += \
     qmlunit.qml \
-    scripts/qmlunit.js
+    scripts/qmlunit.js \
+    QmlTestCase.qml \
+    test/TestTest.qml \
+    test/SameTest.qml \
+    test/AllTests.qml \
+    QmlTestSuite.qml
