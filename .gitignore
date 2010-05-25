@@ -1,1 +1,5 @@
-qmlunit.qmlproject.user
+*.pro.user
+Makefile
+*.o
+moc_*
+qmlunit
