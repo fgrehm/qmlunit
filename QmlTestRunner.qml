@@ -6,9 +6,6 @@ import "scripts/qmlunit.js" as QmlUnit
 Rectangle {
     id: runner
 
-    width: parent.width
-    height: parent.height
-
     Text {
         id: resultsHeader
         text: "RESULTS"
@@ -85,6 +82,13 @@ Rectangle {
         return timer;
     }
 
+    function parseInput(input) {
+        var folder = input.substring(0, input.lastIndexOf('/'));
+        var testCase = input.substring(input.lastIndexOf('/') + 1, input.lastIndexOf('.qml'));
+
+        return {folder: folder, testCase: testCase};
+    }
+
     Component.onCompleted: {
         var testsRan = 0;
         var numAssertions = 0;
@@ -124,10 +128,8 @@ Rectangle {
 
         QmlUnit.onCompleted();
 
-        suite.runTests();
-    }
-
-    AllTests {
-        id: suite
+        var input = 'test/AllTests.qml';
+        input = parseInput(input);
+        createQmlObject('import Qt 4.7; import "' + input.folder + '"; ' + input.testCase + ' { }', runner, "Loading TestSuite").runTests();
     }
 }

@@ -49,11 +49,11 @@ Item {
         return timer;
     }
 
-    function runTests(callback) {
+    function runTests() {
         var setupAndTeardown = {};
 
-        if (this.setup) setupAndTeardown.setup = this.setup;
-        if (this.teardown) setupAndTeardown.teardown = this.teardown;
+        if (testCase.setup) setupAndTeardown.setup = testCase.setup;
+        if (testCase.teardown) setupAndTeardown.teardown = testCase.teardown;
 
         module(name, setupAndTeardown);
 
@@ -68,9 +68,9 @@ Item {
             if (expected) parts.shift();
 
             if (expected)
-                QmlUnit.QUnit[testType](parts.join(' '), expected, this[key]);
+                QmlUnit.QUnit[testType](parts.join(' '), expected, testCase[key]);
             else
-                QmlUnit.QUnit[testType](parts.join(' '), this[key]);
+                QmlUnit.QUnit[testType](parts.join(' '), testCase[key]);
         }
     }
 }
