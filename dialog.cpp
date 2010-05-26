@@ -7,15 +7,16 @@
 
 #include "dialog.h"
 
-Dialog::Dialog()
+Dialog::Dialog(QString appPath, QString input)
 {
     setWindowTitle(tr("QmlUnit"));
 
     view = new QDeclarativeView(this);
 
     view->engine()->setOfflineStoragePath(QDir::currentPath() + "/storage");
+    view->rootContext()->setContextProperty("testSuiteInput", input);
 
-    view->setSource(QUrl("qmlunit.qml"));
+    view->setSource(QUrl(appPath + "/qmlunit.qml"));
 
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 

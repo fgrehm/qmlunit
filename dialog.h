@@ -10,7 +10,7 @@ class Dialog : public QDialog
     Q_OBJECT
 
 public:
-    Dialog();
+    Dialog(QString appPath, QString input);
 
 private:
     QDeclarativeView *view;

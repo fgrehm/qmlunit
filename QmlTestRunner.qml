@@ -7,10 +7,21 @@ Rectangle {
     id: runner
 
     Text {
+        id: filePathBanner
+        text: testSuiteInput
+        font.pixelSize: 18
+        color: "blue"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+    }
+
+    Text {
         id: resultsHeader
         text: "RESULTS"
         font.pixelSize: 23
         font.bold: true
+        anchors.top: filePathBanner.bottom
         anchors.horizontalCenter: runner.horizontalCenter
     }
 
@@ -128,8 +139,7 @@ Rectangle {
 
         QmlUnit.onCompleted();
 
-        var input = 'test/AllTests.qml';
-        input = parseInput(input);
+        var input = parseInput(testSuiteInput);
         createQmlObject('import Qt 4.7; import "' + input.folder + '"; ' + input.testCase + ' { }', runner, "Loading TestSuite").runTests();
     }
 }
