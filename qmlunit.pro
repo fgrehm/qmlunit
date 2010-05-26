@@ -24,4 +24,11 @@ OTHER_FILES += \
     test/TestTest.qml \
     test/SameTest.qml \
     test/AllTests.qml \
-    QmlTestSuite.qml
+    QmlTestSuite.qml \
+    scripts/support.js \
+    test/SetupAndTearDownTest.qml \
+    test/TeardownAndStopTest.qml \
+    test/AsyncTestTest.qml \
+    test/JsDumpTest.qml \
+    test/ScopeTest.qml \
+    QmlTestRunner.qml

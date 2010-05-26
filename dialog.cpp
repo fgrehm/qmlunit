@@ -14,12 +14,10 @@ Dialog::Dialog()
     view = new QDeclarativeView(this);
 
     view->engine()->setOfflineStoragePath(QDir::currentPath() + "/storage");
-//    view->rootContext()->setContextProperty("mainDialog", this);
 
     view->setSource(QUrl("qmlunit.qml"));
 
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-
 
     QHBoxLayout* layout = new QHBoxLayout();
     layout->setSpacing(0);

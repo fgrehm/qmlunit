@@ -1,9 +1,12 @@
 import Qt 4.7
-import "../QmlTestSuite.qml"
-import "SameTest.qml"
-import "TestTest.qml"
+import "../"
 
 QmlTestSuite {
-	SameTest{}
-	TestTest{}
+    AsyncTestTest { }
+    JsDumpTest { }
+    ScopeTest { }
+    SetupAndTearDownTest { }
+    TeardownAndStopTest { }
+    TestTest { }
+    SameTest { }
 }

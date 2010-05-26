@@ -2,58 +2,75 @@ import Qt 4.7
 import "scripts/qmlunit.js" as QmlUnit
 
 Item {
-	property variant main : parent
+    id: testCase
 
-	function setTimeout(callback, timeout) {
-		var obj = createQmlObject('import Qt 4.7; Timer {running: false; repeat: false; interval: ' + timeout + '}', main, "setTimeout");
-		obj.triggered.connect(callback);
-		obj.running = true;
-		obj.destroy(timeout + 50);
-	}
+    property string name : 'TestCase'
 
-	function module(name, testEnvironment) {
-		QmlUnit.QUnit.module(name, testEnvironment);
-	}
+    function ok(a, msg) {
+        QmlUnit.QUnit.ok(a, msg);
+    }
 
-	function test(testName, expected, callback) {
-		if (arguments.length === 2)
-			QmlUnit.QUnit.test(testName, expected);
-		else
-			QmlUnit.QUnit.test(testName, expected, callback);
-	}
+    function equals(actual, expected, message) {
+        QmlUnit.QUnit.equals(actual, expected, message);
+    }
 
-	function asyncTest(testName, expected, callback) {
-		if (arguments.length === 2)
-			QmlUnit.QUnit.asyncTest(testName, expected);
-		else
-			QmlUnit.QUnit.asyncTest(testName, expected, callback);
-	}
+    function same(a, b, message) {
+        QmlUnit.QUnit.same(a, b, message);
+    }
 
-	function ok(a, msg) {
-		QmlUnit.QUnit.ok(a, msg);
-	}
+    function expect(asserts) {
+        QmlUnit.QUnit.expect(asserts);
+    }
 
-	function equals(actual, expected, message) {
-		QmlUnit.QUnit.equals(actual, expected, message);
-	}
+    function stop() {
+        QmlUnit.QUnit.stop();
+    }
 
-	function same(a, b, message) {
-		QmlUnit.QUnit.same(a, b, message);
-	}
+    function start() {
+        QmlUnit.QUnit.start();
+    }
 
-	function expect(asserts) {
-		QmlUnit.QUnit.expect(asserts);
-	}
+    function module(name, testEnvironment) {
+        QmlUnit.QUnit.module(name, testEnvironment);
+    }
 
-	function stop() {
-		QmlUnit.QUnit.stop();
-	}
+    function setTimeout(callback, timeout) {
+        var obj = createQmlObject('import Qt 4.7; Timer {running: false; repeat: false; interval: ' + timeout + '}', testCase, "setTimeout");
+        obj.triggered.connect(callback);
+        obj.running = true;
 
-	function start() {
-		QmlUnit.QUnit.start();
-	}
+        return obj;
+    }
 
-	function runTests() {
-		console.log('No tests found');
-	}
+    function clearTimeout(timer) {
+        timer.running = false;
+        timer.destroy(1);
+
+        return timer;
+    }
+
+    function runTests(callback) {
+        var setupAndTeardown = {};
+
+        if (this.setup) setupAndTeardown.setup = this.setup;
+        if (this.teardown) setupAndTeardown.teardown = this.teardown;
+
+        module(name, setupAndTeardown);
+
+        for (var key in testCase) {
+            if (!(key.startsWithAny(['test_', 'asyncTest_']))) continue;
+
+            var parts = key.split('_');
+
+            var testType = parts.shift();
+
+            var expected = parseInt(parts[0], 10);
+            if (expected) parts.shift();
+
+            if (expected)
+                QmlUnit.QUnit[testType](parts.join(' '), expected, this[key]);
+            else
+                QmlUnit.QUnit[testType](parts.join(' '), this[key]);
+        }
+    }
 }

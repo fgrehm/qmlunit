@@ -10,15 +10,14 @@
  * and GPL (GPL-LICENSE.txt) licenses.
  */
 
-var QUnit = {};
-
 var window = {
-	setTimeout: null
+        setTimeout: null,
+        clearTimeout: null
 };
 
 //(function(window) {
 
-QUnit = {
+var QUnit = {
 
 	// Initialize the configuration options
 	init: function() {
@@ -139,7 +138,7 @@ QUnit = {
 
 				// Restart the tests if they're blocking
 				if ( config.blocking ) {
-					start();
+                                        QUnit.start();
 				}
 			}
 		});
@@ -322,7 +321,7 @@ QUnit = {
 		if ( window.setTimeout ) {
 			window.setTimeout(function() {
 				if ( config.timeout ) {
-					clearTimeout(config.timeout);
+                                        window.clearTimeout(config.timeout);
 				}
 
 				config.blocking = false;
@@ -442,16 +441,18 @@ var config = {
 //}
 
 if ( typeof document === "undefined" || document.readyState === "complete" ) {
-	config.autorun = true;
+        config.autorun = true;
 }
 
 //addEvent(window, "load", function() {
+function onCompleted() {
 	// Initialize the config, saving the execution queue
 	var oldconfig = extend({}, config);
 	QUnit.init();
 	extend(config, oldconfig);
 
-	config.blocking = false;
+        config.blocking = false;
+
 
 //	var userAgent = id("qunit-userAgent");
 //	if ( userAgent ) {
@@ -512,6 +513,7 @@ if ( typeof document === "undefined" || document.readyState === "complete" ) {
 
 
 //});
+}
 
 function done() {
 	if ( config.doneTimer && window.clearTimeout ) {
