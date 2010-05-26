@@ -1,8 +1,10 @@
 import Qt 4.7
 import "scripts/qmlunit.js" as QmlUnit
+import "scripts/interaction.js" as Interactions
 
 Item {
     id: testCase
+    visible: false
 
     property string name : 'TestCase'
 
@@ -34,6 +36,14 @@ Item {
         QmlUnit.QUnit.module(name, testEnvironment);
     }
 
+    function connect(sig, func) {
+        Interactions.connect(sig, func);
+    }
+
+    function click(element) {
+        Interactions.click(element);
+    }
+
     function setTimeout(callback, timeout) {
         var obj = createQmlObject('import Qt 4.7; Timer {running: false; repeat: false; interval: ' + timeout + '}', testCase, "setTimeout");
         obj.triggered.connect(callback);
@@ -50,10 +60,16 @@ Item {
     }
 
     function runTests() {
-        var setupAndTeardown = {};
+        var setupAndTeardown = {
+            setup: function() {
+                if (testCase.setup) testCase.setup();
+            },
+            teardown: function() {
+                Interactions.disconnectAll();
 
-        if (testCase.setup) setupAndTeardown.setup = testCase.setup;
-        if (testCase.teardown) setupAndTeardown.teardown = testCase.teardown;
+                if (testCase.teardown) testCase.teardown();
+            }
+        };
 
         module(name, setupAndTeardown);
 
@@ -65,7 +81,7 @@ Item {
             var testType = parts.shift();
 
             var expected = parseInt(parts[0], 10);
-            if (expected) parts.shift();
+            if (expected != NaN) parts.shift();
 
             if (expected)
                 QmlUnit.QUnit[testType](parts.join(' '), expected, testCase[key]);

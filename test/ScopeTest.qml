@@ -4,16 +4,18 @@ import "../"
 QmlTestCase {
     name: 'Testing TestCase scope'
 
+    property string foo
+
     function setup() {
-        this.foo = "bar";
+        foo = "bar";
     }
 
     function teardown() {
-        same(this.foo, "bar");
+        same(foo, "bar");
     }
 
     function test_scope_check() {
         expect(2);
-        same(this.foo, "bar");
+        same(foo, "bar");
     }
 }

@@ -31,4 +31,6 @@ OTHER_FILES += \
     test/AsyncTestTest.qml \
     test/JsDumpTest.qml \
     test/ScopeTest.qml \
-    QmlTestRunner.qml
+    QmlTestRunner.qml \
+    test/InteractingWithQmlElementTest.qml \
+    scripts/interaction.js

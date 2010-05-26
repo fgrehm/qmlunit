@@ -46,8 +46,6 @@ Rectangle {
             contentHeight: results.height
             contentWidth: results.width
 
-            flickDirection: Flickable.VerticalFlick
-
             Text {
                 id: results
 

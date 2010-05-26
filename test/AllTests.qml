@@ -8,5 +8,6 @@ QmlTestSuite {
     SetupAndTearDownTest { }
     TeardownAndStopTest { }
     TestTest { }
+    InteractingWithQmlElementTest { }
     SameTest { }
 }
