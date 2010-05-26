@@ -119,7 +119,7 @@ Rectangle {
         };
 
         QmlUnit.QUnit.done = function() {
-            banner.text = '<b>Finished!</b> ' + banner.text.replace('and still running...', '');
+            banner.text = '<b>Tests completed in '  + (arguments[2] / 1000).toFixed(3)  + ' seconds</b>: ' + banner.text.replace('and still running...', '');
         };
 
         QmlUnit.onCompleted();

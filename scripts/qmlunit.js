@@ -570,7 +570,7 @@ function done() {
 //		result.innerHTML = html;
 //	}
 
-	QUnit.done( config.stats.bad, config.stats.all );
+        QUnit.done( config.stats.bad, config.stats.all, (new Date - config.started) );
 }
 
 function validTest( name ) {
