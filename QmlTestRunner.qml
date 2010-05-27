@@ -1,79 +1,40 @@
 import Qt 4.7
-import "test"
+import "components"
 import "scripts/support.js" as Support
 import "scripts/qmlunit.js" as QmlUnit
 
 Rectangle {
     id: runner
 
-    Text {
-        id: filePathBanner
-        text: testSuiteInput
-        font.pixelSize: 18
-        color: "blue"
+    property int testsRan : 0
+    property int numAssertions : 0;
+    property int totalFailures : 0;
 
-        anchors.left: parent.left
-        anchors.leftMargin: 5
-    }
+    Column {
 
-    Text {
-        id: resultsHeader
-        text: "RESULTS"
-        font.pixelSize: 23
-        font.bold: true
-        anchors.top: filePathBanner.bottom
-        anchors.horizontalCenter: runner.horizontalCenter
-    }
+        anchors.fill: parent
 
-    Rectangle {
-        border.color: 'black'
-        border.width: 2
-        width: parent.width
+        Banner { }
 
-        anchors.top: resultsHeader.bottom
-        anchors.topMargin: 10
+        Separator { }
 
-        anchors.bottom: banner.top
-        anchors.bottomMargin: 10
+        FilePathBanner { id: filePathBanner }
 
-        Flickable {
-            anchors.fill: parent
+        Results {
+            id: results
 
-            clip: true
-
-            width: parent.width
-
-            contentHeight: results.height
-            contentWidth: results.width
-
-            Text {
-                id: results
-
-                text: ""
-
-                function appendTestCase(line) {
-                    text += '<br />&nbsp;&nbsp;&nbsp;TestCase: <b>' + line + "</b><br />";
-                }
-
-                function appendTest(line) {
-                    text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test: " + line + "<br />";
-                }
-
-                function appendResult(line) {
-                    text += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + line + "<br />";
-                }
-
-                textFormat: Text.RichText
-            }
+            anchors.top: filePathBanner.bottom
+            anchors.bottom: separator.top
         }
-    }
 
-    Text {
-        id: banner
-        anchors.bottom: runner.bottom
-        textFormat: Text.RichText
+        Separator {
+            id: separator
+            anchors.bottom: status.top
+            height: 2
+            color: "white"
+        }
 
-        anchors.horizontalCenter: runner.horizontalCenter
+        Status { id: status }
     }
 
     function setTimeout(callback, timeout) {
@@ -98,46 +59,46 @@ Rectangle {
         return {folder: folder, testCase: testCase};
     }
 
-    Component.onCompleted: {
-        var testsRan = 0;
-        var numAssertions = 0;
-        var totalFailures = 0;
+    function newTestCase(name) {
+        results.appendTestCase(name);
+    }
 
+    function newTest(testName, failures, totalAssertions, assertions) {
+        QmlUnit.QUnit.stop();
+
+        totalFailures += failures;
+        numAssertions += totalAssertions;
+        status.text = (++testsRan) + ' tests, ' + numAssertions + ' assertions, <font color="red">' + totalFailures + '</font> failures and still running...';
+
+        results.appendTest(testName + " <b>(failed: <font color='red'>" + failures + "</font>, passed: <font color='green'>" + (totalAssertions - failures) + "</font>, total: " + totalAssertions + ")</b>");
+
+        for ( var i = 0; i < assertions.length; i++ ) {
+            var assertion = assertions[i];
+
+            var msg = assertion.result ? "<font color='green'>pass" : "<font color='red'>fail";
+            msg += ': ' + (assertion.message || "(no message)") + '</font>';
+
+            results.appendResult(msg);
+        }
+
+        QmlUnit.QUnit.start();
+    }
+
+    function testsCompleted() {
+        status.text = '<b>Tests completed in '  + (arguments[2] / 1000).toFixed(3)  + ' seconds</b>: ' + status.text.replace('and still running...', '');
+    }
+
+    Component.onCompleted: {
         QmlUnit.window.setTimeout = runner.setTimeout;
         QmlUnit.window.clearTimeout = runner.clearTimeout;
 
-        QmlUnit.QUnit.moduleStart = function(name) {
-            results.appendTestCase(name);
-        };
-
-        QmlUnit.QUnit.testDone = function(testName, failures, totalAssertions, assertions) {
-            QmlUnit.QUnit.stop();
-
-            totalFailures += failures;
-            numAssertions += totalAssertions;
-            banner.text = (++testsRan) + ' tests, ' + numAssertions + ' assertions, <font color="red">' + totalFailures + '</font> failures and still running...';
-
-            results.appendTest(testName + " <b>(failed: <font color='red'>" + failures + "</font>, passed: <font color='green'>" + (totalAssertions - failures) + "</font>, total: " + totalAssertions + ")</b>");
-
-            for ( var i = 0; i < assertions.length; i++ ) {
-                var assertion = assertions[i];
-
-                var msg = assertion.result ? "<font color='green'>pass" : "<font color='red'>fail";
-                msg += ': ' + (assertion.message || "(no message)") + '</font>';
-
-                results.appendResult(msg);
-            }
-
-            QmlUnit.QUnit.start();
-        };
-
-        QmlUnit.QUnit.done = function() {
-            banner.text = '<b>Tests completed in '  + (arguments[2] / 1000).toFixed(3)  + ' seconds</b>: ' + banner.text.replace('and still running...', '');
-        };
+        QmlUnit.QUnit.moduleStart = newTestCase;
+        QmlUnit.QUnit.testDone = newTest;
+        QmlUnit.QUnit.done = testsCompleted;
 
         QmlUnit.onCompleted();
 
         var input = parseInput(testSuiteInput);
-        createQmlObject('import Qt 4.7; import "' + input.folder + '"; ' + input.testCase + ' { }', runner, "Loading TestSuite").runTests();
+        createQmlObject('import Qt 4.7; import "' + input.folder + '"; ' + input.testCase + ' { }', runner, input.testCase).runTests();
     }
 }

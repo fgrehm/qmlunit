@@ -1,5 +1,5 @@
 import Qt 4.7
-import "../"
+import "../lib"
 
 QmlTestCase {
     name: 'Testing TestCase scope'

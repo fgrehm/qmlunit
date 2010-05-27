@@ -1,6 +1,6 @@
 import Qt 4.7
-import "scripts/qmlunit.js" as QmlUnit
-import "scripts/interaction.js" as Interactions
+import "../scripts/qmlunit.js" as QmlUnit
+import "../scripts/interaction.js" as Interactions
 
 Item {
     id: testCase
@@ -81,7 +81,7 @@ Item {
             var testType = parts.shift();
 
             var expected = parseInt(parts[0], 10);
-            if (expected != NaN) parts.shift();
+            if (expected) parts.shift();
 
             if (expected)
                 QmlUnit.QUnit[testType](parts.join(' '), expected, testCase[key]);

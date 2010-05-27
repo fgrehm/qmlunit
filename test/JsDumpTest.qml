@@ -1,5 +1,5 @@
 import Qt 4.7
-import "../"
+import "../lib"
 import "../scripts/qmlunit.js" as QmlUnit
 
 QmlTestCase {

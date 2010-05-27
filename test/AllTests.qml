@@ -1,5 +1,5 @@
 import Qt 4.7
-import "../"
+import "../lib"
 
 QmlTestSuite {
     AsyncTestTest { }
@@ -9,5 +9,5 @@ QmlTestSuite {
     TeardownAndStopTest { }
     TestTest { }
     InteractingWithQmlElementTest { }
-    SameTest { }
+//    SameTest { }
 }

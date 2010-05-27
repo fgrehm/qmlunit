@@ -20,11 +20,11 @@ FORMS    +=
 OTHER_FILES += \
     qmlunit.qml \
     scripts/qmlunit.js \
-    QmlTestCase.qml \
+    lib/QmlTestCase.qml \
     test/TestTest.qml \
     test/SameTest.qml \
     test/AllTests.qml \
-    QmlTestSuite.qml \
+    lib/QmlTestSuite.qml \
     scripts/support.js \
     test/SetupAndTearDownTest.qml \
     test/TeardownAndStopTest.qml \
@@ -33,4 +33,10 @@ OTHER_FILES += \
     test/ScopeTest.qml \
     QmlTestRunner.qml \
     test/InteractingWithQmlElementTest.qml \
-    scripts/interaction.js
+    scripts/interaction.js \
+    components/Banner.qml \
+    components/Separator.qml \
+    components/FilePathBanner.qml \
+    components/Status.qml \
+    components/Results.qml \
+    README
