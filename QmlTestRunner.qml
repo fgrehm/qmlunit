@@ -66,9 +66,11 @@ Rectangle {
     function newTest(testName, failures, totalAssertions, assertions) {
         QmlUnit.QUnit.stop();
 
+        if (failures > 0) status.state = 'error';
+
         totalFailures += failures;
         numAssertions += totalAssertions;
-        status.text = (++testsRan) + ' tests, ' + numAssertions + ' assertions, <font color="red">' + totalFailures + '</font> failures and still running...';
+        status.text = (++testsRan) + ' tests, ' + numAssertions + ' assertions, ' + totalFailures + ' failures and still running...';
 
         results.appendTest(testName + " <b>(failed: <font color='red'>" + failures + "</font>, passed: <font color='green'>" + (totalAssertions - failures) + "</font>, total: " + totalAssertions + ")</b>");
 
