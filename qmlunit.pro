@@ -38,4 +38,6 @@ OTHER_FILES += \
     components/Status.qml \
     components/Results.qml \
     README \
-    components/ProgressBar.qml
+    components/ProgressBar.qml \
+    test/AsyncSetupTest.qml \
+    test/AsyncTeardownTest.qml

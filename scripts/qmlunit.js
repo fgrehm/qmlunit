@@ -136,7 +136,9 @@ var QUnit = {
 			} catch(e) {
 				QUnit.ok( false, "Setup failed on " + name + ": " + e.message );
 			}
+	  });
 
+    synchronize(function() {
 			if ( async ) {
 				QUnit.stop();
 			}
@@ -151,7 +153,7 @@ var QUnit = {
 
 				// Restart the tests if they're blocking
 				if ( config.blocking ) {
-                                        QUnit.start();
+           QUnit.start();
 				}
 			}
 		});
@@ -164,6 +166,9 @@ var QUnit = {
 				QUnit.ok( false, "Teardown failed on " + name + ": " + e.message );
 			}
 
+    });
+    
+    synchronize(function() {
 			try {
 				QUnit.reset();
 			} catch(e) {
