@@ -6,39 +6,32 @@ import "scripts/qmlunit.js" as QmlUnit
 Rectangle {
     id: runner
 
-    property int testsRan : 0
-    property int numAssertions : 0;
-    property int totalFailures : 0;
+    property alias totalTests : status.totalTests
+    property alias testsRan : status.testsRan
+    property alias totalAssertions : status.totalAssertions
+    property alias totalFailures : status.totalFailures
 
     Column {
 
         anchors.fill: parent
 
-        Banner { }
+        Banner { id: banner }
 
-        Separator { }
-
-        FilePathBanner { id: filePathBanner }
+        Separator { id: separator }
 
         Results {
             id: results
-
-            anchors.top: filePathBanner.bottom
-            anchors.bottom: separator.top
+            height: parent.height - banner.height - separator.height - status.height
         }
 
-        Separator {
-            id: separator
-            anchors.bottom: status.top
-            height: 2
-            color: "white"
+        Status {
+            id: status
+            state: 'loading'
         }
-
-        Status { id: status }
     }
 
     function setTimeout(callback, timeout) {
-        var obj = createQmlObject('import Qt 4.7; Timer {running: false; repeat: false; interval: ' + timeout + '}', runner, "setTimeout");
+        var obj = Qt.createQmlObject('import Qt 4.7; Timer {running: false; repeat: false; interval: ' + timeout + '}', runner, "setTimeout");
         obj.triggered.connect(callback);
         obj.running = true;
 
@@ -59,48 +52,62 @@ Rectangle {
         return {folder: folder, testCase: testCase};
     }
 
-    function newTestCase(name) {
-        results.appendTestCase(name);
+    function testCaseStart(name) {
+        var tc = {
+            name: name,
+            failures: 0,
+            tests: [ ]
+        };
+        results.appendTestCase(tc);
     }
 
-    function newTest(testName, failures, totalAssertions, assertions) {
+    function testFinished(testName, failures, totalAssertions, assertions) {
         QmlUnit.QUnit.stop();
 
-        if (failures > 0) status.state = 'error';
+        testsRan += 1;
+        totalFailures += (failures > 0) ? 1 : 0;
+        runner.totalAssertions += totalAssertions;
 
-        totalFailures += failures;
-        numAssertions += totalAssertions;
-        status.text = (++testsRan) + ' tests, ' + numAssertions + ' assertions, ' + totalFailures + ' failures and still running...';
+        var test = {
+            name: testName,
+            failures: failures,
+            assertions: assertions
+        };
 
-        results.appendTest(testName + " <b>(failed: <font color='red'>" + failures + "</font>, passed: <font color='green'>" + (totalAssertions - failures) + "</font>, total: " + totalAssertions + ")</b>");
-
-        for ( var i = 0; i < assertions.length; i++ ) {
-            var assertion = assertions[i];
-
-            var msg = assertion.result ? "<font color='green'>pass" : "<font color='red'>fail";
-            msg += ': ' + (assertion.message || "(no message)") + '</font>';
-
-            results.appendResult(msg);
-        }
+        results.appendTest(test);
 
         QmlUnit.QUnit.start();
     }
 
-    function testsCompleted() {
-        status.text = '<b>Tests completed in '  + (arguments[2] / 1000).toFixed(3)  + ' seconds</b>: ' + status.text.replace('and still running...', '');
+    function registered(tc) {
+        totalTests += tc.tests.length;
     }
 
     Component.onCompleted: {
+        QmlUnit.Runner.onTestCaseRegistered = registered;
+
+        var input = parseInput(testSuiteInput);
+        Qt.createQmlObject('import Qt 4.7; import "' + input.folder + '"; ' + input.testCase + ' { }', runner, input.testCase);
+
         QmlUnit.window.setTimeout = runner.setTimeout;
         QmlUnit.window.clearTimeout = runner.clearTimeout;
 
-        QmlUnit.QUnit.moduleStart = newTestCase;
-        QmlUnit.QUnit.testDone = newTest;
-        QmlUnit.QUnit.done = testsCompleted;
+        QmlUnit.QUnit.moduleStart = testCaseStart;
+        QmlUnit.QUnit.testDone = testFinished;
 
         QmlUnit.onCompleted();
 
-        var input = parseInput(testSuiteInput);
-        createQmlObject('import Qt 4.7; import "' + input.folder + '"; ' + input.testCase + ' { }', runner, input.testCase).runTests();
+        status.state = 'running';
+
+        QmlUnit.Runner.testCases.each(function(tc){
+            QmlUnit.QUnit.module(tc.name, tc.testEnvironment);
+
+            tc.tests.each(function(test){
+                if (test.length == 4)
+                    QmlUnit.QUnit[test[0]](test[1], test[2], test[3]);
+                else
+                    QmlUnit.QUnit[test[0]](test[1], test[2]);
+            });
+        });
     }
 }

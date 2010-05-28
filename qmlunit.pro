@@ -24,7 +24,6 @@ OTHER_FILES += \
     test/TestTest.qml \
     test/SameTest.qml \
     test/AllTests.qml \
-    lib/QmlTestSuite.qml \
     scripts/support.js \
     test/SetupAndTearDownTest.qml \
     test/TeardownAndStopTest.qml \
@@ -36,7 +35,7 @@ OTHER_FILES += \
     scripts/interaction.js \
     components/Banner.qml \
     components/Separator.qml \
-    components/FilePathBanner.qml \
     components/Status.qml \
     components/Results.qml \
-    README
+    README \
+    components/ProgressBar.qml

@@ -1,7 +1,7 @@
 import Qt 4.7
 import "../lib"
 
-QmlTestSuite {
+Item {
     AsyncTestTest { }
     JsDumpTest { }
     ScopeTest { }
@@ -9,5 +9,5 @@ QmlTestSuite {
     TeardownAndStopTest { }
     TestTest { }
     InteractingWithQmlElementTest { }
-//    SameTest { }
+    SameTest { }
 }

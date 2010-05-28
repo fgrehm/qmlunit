@@ -11,3 +11,8 @@ String.prototype.startsWithAny = function(strings){
 
     return false;
 }
+
+Array.prototype.each = function(eachFn) {
+    for (var i = 0; i < this.length; i++)
+        eachFn(this[i]);
+}

@@ -4,5 +4,5 @@ Rectangle {
     width: parent.width
 
     height: 5
-    color: "#ee5757"
+    color: "darkgray"
 }

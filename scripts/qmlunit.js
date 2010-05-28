@@ -1,4 +1,5 @@
 .pragma library
+
 /*
  * QmlUnit - A Qml Unit Testing Framework
  *
@@ -9,6 +10,18 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  */
+
+var Runner = {
+    testCases: [],
+
+    onTestCaseRegistered: function(tc){},
+
+    registerTestCase: function(tc) {
+        this.testCases.unshift(tc);
+        this.onTestCaseRegistered(tc);
+    }
+}
+
 
 var window = {
         setTimeout: null,

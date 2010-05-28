@@ -32,10 +32,6 @@ Item {
         QmlUnit.QUnit.start();
     }
 
-    function module(name, testEnvironment) {
-        QmlUnit.QUnit.module(name, testEnvironment);
-    }
-
     function connect(sig, func) {
         Interactions.connect(sig, func);
     }
@@ -45,7 +41,7 @@ Item {
     }
 
     function setTimeout(callback, timeout) {
-        var obj = createQmlObject('import Qt 4.7; Timer {running: false; repeat: false; interval: ' + timeout + '}', testCase, "setTimeout");
+        var obj = Qt.createQmlObject('import Qt 4.7; Timer {running: false; repeat: false; interval: ' + timeout + '}', testCase, "setTimeout");
         obj.triggered.connect(callback);
         obj.running = true;
 
@@ -59,19 +55,21 @@ Item {
         return timer;
     }
 
-    function runTests() {
-        var setupAndTeardown = {
-            setup: function() {
-                if (testCase.setup) testCase.setup();
+    Component.onCompleted: {
+        var tc = {
+            name: name,
+            testEnvironment: {
+                setup: function() {
+                    if (testCase.setup) testCase.setup();
+                },
+                teardown: function() {
+                    Interactions.disconnectAll();
+
+                    if (testCase.teardown) testCase.teardown();
+                }
             },
-            teardown: function() {
-                Interactions.disconnectAll();
-
-                if (testCase.teardown) testCase.teardown();
-            }
+            tests: []
         };
-
-        module(name, setupAndTeardown);
 
         for (var key in testCase) {
             if (!(key.startsWithAny(['test_', 'asyncTest_']))) continue;
@@ -84,9 +82,11 @@ Item {
             if (expected) parts.shift();
 
             if (expected)
-                QmlUnit.QUnit[testType](parts.join(' '), expected, testCase[key]);
+                tc.tests.push([testType, parts.join(' '), expected, testCase[key]]);
             else
-                QmlUnit.QUnit[testType](parts.join(' '), testCase[key]);
+                tc.tests.push([testType, parts.join(' '), testCase[key]]);
         }
+
+        QmlUnit.Runner.registerTestCase(tc);
     }
 }

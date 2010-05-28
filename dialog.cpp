@@ -14,6 +14,7 @@ Dialog::Dialog(QString appPath, QString input)
     view = new QDeclarativeView(this);
 
     view->engine()->setOfflineStoragePath(QDir::currentPath() + "/storage");
+
     view->rootContext()->setContextProperty("testSuiteInput", input);
 
     view->setSource(QUrl(appPath + "/qmlunit.qml"));

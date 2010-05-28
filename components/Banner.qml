@@ -18,11 +18,11 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        effect: DropShadow {
-            blurRadius: 3
-            offset.x: 1
-            offset.y: 5
-            color: "black"
-        }
+//        effect: DropShadow {
+//            blurRadius: 3
+//            offset.x: 1
+//            offset.y: 5
+//            color: "black"
+//        }
     }
 }
