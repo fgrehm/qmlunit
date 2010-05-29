@@ -2,33 +2,22 @@
 #include "dialog.h"
 #include <QDebug>
 #include <QDir>
+#include <QList>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QListIterator<QString> i(a.arguments());
+    QStringList args = a.arguments();
     // Skips executable
-    i.next();
+    args.removeAt(0);
 
-    QString input;
-
-    if (i.hasNext()) {
-        input = QDir().absoluteFilePath(i.next());
-
-        if (!QDir().exists(input)) {
-            qDebug() << "File not found:" << input << "\n";
-            return 1;
-        }
-
-        qDebug() << "Testing:" << input << "\n";
-    } else {
-        input = a.applicationDirPath() + "/" + QString("test/AllTests.qml");
-
-        qDebug() << "No input file specified, failing back to qmlunit Test Suite (" << input << ")\n";
+    if (args.count() == 0) {
+        qDebug() << "No arguments passed, failing back to qmlunit Test Suite (" << (a.applicationDirPath() + "/test") << ")\n";
+        args = QStringList(a.applicationDirPath() + "/");
     }
 
-    Dialog w(a.applicationDirPath(), input);
+    Dialog w(a.applicationDirPath(), args);
 
 #if defined(Q_WS_S60)
     w.showMaximized();

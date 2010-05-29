@@ -45,13 +45,6 @@ Rectangle {
         return timer;
     }
 
-    function parseInput(input) {
-        var folder = input.substring(0, input.lastIndexOf('/'));
-        var testCase = input.substring(input.lastIndexOf('/') + 1, input.lastIndexOf('.qml'));
-
-        return {folder: folder, testCase: testCase};
-    }
-
     function testCaseStart(name) {
         var tc = {
             name: name,
@@ -83,11 +76,20 @@ Rectangle {
         totalTests += tc.tests.length;
     }
 
+    function initializeTests() {
+        testsInput.each(function(t){
+            var folder = t.substring(0, t.lastIndexOf('/'));
+            var testCase = t.substring(t.lastIndexOf('/') + 1, t.lastIndexOf('.qml'));
+
+            Qt.createQmlObject('import Qt 4.7; import "' + folder + '"; ' + testCase + ' { }', runner, testCase);
+        });
+    }
+
+
     Component.onCompleted: {
         QmlUnit.Runner.onTestCaseRegistered = registered;
 
-        var input = parseInput(testSuiteInput);
-        Qt.createQmlObject('import Qt 4.7; import "' + input.folder + '"; ' + input.testCase + ' { }', runner, input.testCase);
+        initializeTests();
 
         QmlUnit.window.setTimeout = runner.setTimeout;
         QmlUnit.window.clearTimeout = runner.clearTimeout;

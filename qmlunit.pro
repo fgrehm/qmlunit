@@ -23,7 +23,6 @@ OTHER_FILES += \
     lib/QmlTestCase.qml \
     test/TestTest.qml \
     test/SameTest.qml \
-    test/AllTests.qml \
     scripts/support.js \
     test/SetupAndTearDownTest.qml \
     test/TeardownAndStopTest.qml \
