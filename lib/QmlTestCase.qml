@@ -55,7 +55,7 @@ Item {
         return timer;
     }
 
-    Component.onCompleted: {
+    function registerTestCase() {
         var tc = {
             name: name,
             testEnvironment: {
@@ -88,5 +88,9 @@ Item {
         }
 
         QmlUnit.Runner.registerTestCase(tc);
+    }
+
+    Component.onCompleted: {
+        registerTestCase();
     }
 }

@@ -39,4 +39,7 @@ OTHER_FILES += \
     components/Results.qml \
     components/ProgressBar.qml \
     test/AsyncSetupTest.qml \
-    test/AsyncTeardownTest.qml
+    test/AsyncTeardownTest.qml \
+    test/QUnitCompatibilityTest.qml \
+    lib/QUnitTestSuite.qml \
+    scripts/QUnitTestSuite.js

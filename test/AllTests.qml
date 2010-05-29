@@ -2,14 +2,17 @@ import Qt 4.7
 import "../lib"
 
 Item {
+    TestTest { }
+    SetupAndTearDownTest { }
+    TeardownAndStopTest { }
     AsyncSetupTest { }
     AsyncTeardownTest { }
     AsyncTestTest { }
-    JsDumpTest { }
     ScopeTest { }
-    SetupAndTearDownTest { }
-    TeardownAndStopTest { }
-    TestTest { }
-    InteractingWithQmlElementTest { }
+    JsDumpTest { }
     SameTest { }
+
+    QUnitCompatibilityTest { }
+
+    InteractingWithQmlElementTest { }
 }

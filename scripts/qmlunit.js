@@ -6,7 +6,7 @@
  * Based on:
  *   http://docs.jquery.com/QUnit
  *
- * Copyright (c) 2010 Fábio Rehm, John Resig, Jörn Zaefferer
+ * Copyright (c) 2010 Fábio Rehm
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  */
@@ -17,8 +17,8 @@ var Runner = {
     onTestCaseRegistered: function(tc){},
 
     registerTestCase: function(tc) {
-        this.testCases.unshift(tc);
-        this.onTestCaseRegistered(tc);
+        Runner.testCases.unshift(tc);
+        Runner.onTestCaseRegistered(tc);
     }
 }
 
@@ -30,6 +30,19 @@ var window = {
 
 //(function(window) {
 
+/*
+* QUnit - A JavaScript Unit Testing Framework
+*
+* http://docs.jquery.com/QUnit
+*
+* Copyright (c) 2009 John Resig, Jörn Zaefferer
+* Dual licensed under the MIT (MIT-LICENSE.txt)
+* and GPL (GPL-LICENSE.txt) licenses.
+*
+*
+* Please note that HTML related code was removed / commented out in order to make
+* it work with QML
+*/
 var QUnit = {
 
 	// Initialize the configuration options
