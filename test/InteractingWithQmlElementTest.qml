@@ -12,7 +12,6 @@ QmlTestCase {
     }
 
     id: test
-    name: 'Interacting with QML elements'
 
     function teardown() {
         input.text = '';

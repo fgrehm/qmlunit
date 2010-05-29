@@ -80,8 +80,9 @@ Rectangle {
         testsInput.each(function(t){
             var folder = t.substring(0, t.lastIndexOf('/'));
             var testCase = t.substring(t.lastIndexOf('/') + 1, t.lastIndexOf('.qml'));
+            var relativeFilePath = t.substring(currentPath.length);
 
-            Qt.createQmlObject('import Qt 4.7; import "' + folder + '"; ' + testCase + ' { }', runner, testCase);
+            Qt.createQmlObject('import Qt 4.7; import "' + folder + '"; ' + testCase + ' { name: "' + relativeFilePath + '" }', runner, testCase);
         });
     }
 

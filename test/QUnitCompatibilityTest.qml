@@ -3,8 +3,6 @@ import "../lib"
 import "../scripts/qmlunit.js" as QmlUnit
 
 QUnitTestSuite {
-    name: 'QUnit compatibility'
-
     function body() {
         var QUnit = QmlUnit.QUnit;
 

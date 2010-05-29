@@ -10,7 +10,7 @@
 
 #include "dialog.h"
 
-Dialog::Dialog(QString appPath, QStringList input)
+Dialog::Dialog(QString qmlUnitPath, QStringList input)
 {
     setWindowTitle(tr("QmlUnit"));
 
@@ -21,7 +21,7 @@ Dialog::Dialog(QString appPath, QStringList input)
         findTests(i.next());
 
     i = QStringListIterator(tests);
-    qDebug() << "Tests files found::";
+    qDebug() << "Tests files found:";
     while(i.hasNext()) {
         QString currentArg = i.next();
         qDebug() << "\t" << currentArg;
@@ -29,8 +29,9 @@ Dialog::Dialog(QString appPath, QStringList input)
 
     view->engine()->setOfflineStoragePath(QDir::currentPath() + "/storage");
     view->rootContext()->setContextProperty("testsInput", tests);
+    view->rootContext()->setContextProperty("currentPath", QDir::currentPath());
 
-    view->setSource(QUrl(appPath + "/qmlunit.qml"));
+    view->setSource(QUrl(qmlUnitPath + "/qmlunit.qml"));
 
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 
@@ -51,10 +52,9 @@ void Dialog::findTests(QString path) {
     QStringList filters; filters << "*";
     QDir dir = QDir(QDir(path).absolutePath());
 
-    QListIterator<QFileInfo> files(dir.entryInfoList(filters));
+    QListIterator<QFileInfo> files(dir.entryInfoList(filters, QDir::AllEntries | QDir::NoDotAndDotDot));
     while(files.hasNext()) {
         QFileInfo file = files.next();
-
         if (file.fileName() == "." || file.fileName() == "..") continue;
 
         if (isTest(file))
@@ -73,5 +73,5 @@ bool Dialog::isTest(QString filePath){
 }
 
 bool Dialog::isDir(QFileInfo file){
-    return QDir(file.fileName()).exists();
+    return QDir(file.absoluteFilePath()).exists();
 }

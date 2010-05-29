@@ -2,8 +2,6 @@ import Qt 4.7
 import "../lib"
 
 QmlTestCase {
-    name: 'Setup and teardown'
-
     function setup() {
         ok(true);
     }

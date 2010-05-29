@@ -2,8 +2,6 @@ import Qt 4.7
 import "../lib"
 
 QmlTestCase {
-    name: 'Testing TestCase scope'
-
     property string foo
 
     function setup() {

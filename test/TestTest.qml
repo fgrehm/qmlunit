@@ -2,8 +2,6 @@ import Qt 4.7
 import "../lib"
 
 QmlTestCase {
-    name: 'Basic testing'
-
     // default
     function test_no_setup_and_teardown() {
         expect(1);

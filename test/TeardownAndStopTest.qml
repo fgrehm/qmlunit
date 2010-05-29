@@ -2,8 +2,6 @@ import Qt 4.7
 import "../lib"
 
 QmlTestCase {
-    name: 'Teardown and stop'
-
     property string state;
 
     function teardown() {

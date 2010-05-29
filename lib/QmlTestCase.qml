@@ -6,7 +6,7 @@ Item {
     id: testCase
     visible: false
 
-    property string name : 'TestCase'
+    property string name
 
     function ok(a, msg) {
         QmlUnit.QUnit.ok(a, msg);

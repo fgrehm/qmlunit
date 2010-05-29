@@ -3,8 +3,6 @@ import "../lib"
 import "../scripts/qmlunit.js" as QmlUnit
 
 QmlTestCase {
-    name: 'Testing QUnit.equiv'
-
     function test_primitive_types_and_constants() {
         equals(QmlUnit.QUnit.equiv(null, null), true, "null");
         equals(QmlUnit.QUnit.equiv(null, {}), false, "null");

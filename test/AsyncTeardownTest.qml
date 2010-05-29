@@ -2,8 +2,6 @@ import Qt 4.7
 import "../lib"
 
 QmlTestCase {
-    name: 'Async teardown test'
-
     function teardown() {
         stop();
         setTimeout(function(){

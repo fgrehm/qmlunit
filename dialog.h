@@ -5,6 +5,7 @@
 #include <QDeclarativeView>
 #include <QStringList>
 #include <QFileInfo>
+#include <QDir>
 
 //! [Dialog header]
 class Dialog : public QDialog
@@ -12,7 +13,7 @@ class Dialog : public QDialog
     Q_OBJECT
 
 public:
-    Dialog(QString appPath, QStringList input);
+    Dialog(QString qmlUnitPath, QStringList input);
 
 private:
     QDeclarativeView *view;

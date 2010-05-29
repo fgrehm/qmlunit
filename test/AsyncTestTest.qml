@@ -2,8 +2,6 @@ import Qt 4.7
 import "../lib"
 
 QmlTestCase {
-    name: 'Async testing'
-
     function asyncTest_assync_testing() {
         expect(2);
         ok(true);

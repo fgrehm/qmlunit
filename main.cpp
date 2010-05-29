@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     if (args.count() == 0) {
         qDebug() << "No arguments passed, failing back to qmlunit Test Suite (" << (a.applicationDirPath() + "/test") << ")\n";
-        args = QStringList(a.applicationDirPath() + "/");
+        args = QStringList(a.applicationDirPath() + "/test");
     }
 
     Dialog w(a.applicationDirPath(), args);

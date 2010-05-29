@@ -2,8 +2,6 @@ import Qt 4.7
 import "../lib"
 
 QmlTestCase {
-    name: 'Async setup test'
-
     function setup() {
         stop();
         setTimeout(function(){
