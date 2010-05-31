@@ -41,4 +41,6 @@ OTHER_FILES += \
     test/AsyncTeardownTest.qml \
     test/QUnitCompatibilityTest.qml \
     lib/QUnitTestSuite.qml \
-    scripts/QUnitTestSuite.js
+    scripts/QUnitTestSuite.js \
+    components/QmlLogger.qml \
+    TestRunner.qml
