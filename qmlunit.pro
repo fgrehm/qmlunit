@@ -11,9 +11,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        dialog.cpp
+    qmlunittestrunner.cpp \
+    qmllogger.cpp
 
-HEADERS  += dialog.h
+HEADERS  += \
+    qmlunittestrunner.h \
+    qmllogger.h
 
 FORMS    +=
 

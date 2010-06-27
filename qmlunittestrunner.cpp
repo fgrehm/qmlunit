@@ -1,0 +1,81 @@
+#include "qmlunittestrunner.h"
+#include "qmllogger.h"
+#include <QDeclarativeContext>
+#include <QDebug>
+#include <QDir>
+
+QmlUnitTestRunner::QmlUnitTestRunner(QApplication *app) :
+    QObject(app)
+{
+    this->app = app;
+
+    QStringList args = app->arguments();
+    // Skips executable
+    args.removeAt(0);
+
+    if (args.count() == 0) {
+        qDebug() << "No arguments passed, failing back to qmlunit Test Suite (" << (app->applicationDirPath() + "/test") << ")\n";
+        args = QStringList(app->applicationDirPath() + "/test");
+    }
+
+    QStringListIterator i(args);
+    while(i.hasNext())
+        findTests(i.next());
+
+    i = QStringListIterator(tests);
+    qDebug() << "Tests files found:";
+    while(i.hasNext()) {
+        QString currentArg = i.next();
+        qDebug() << "\t" << currentArg;
+    }
+}
+
+void QmlUnitTestRunner::setup(){
+    QmlLogger *logger = new QmlLogger(app->applicationDirPath(), this);
+
+    QDeclarativeEngine *engine = logger->engine();
+
+    engine->setOfflineStoragePath(QDir::currentPath() + "/storage");
+    engine->rootContext()->setContextProperty("testsInput", tests);
+    engine->rootContext()->setContextProperty("currentPath", QDir::currentPath());
+
+    logger->setup();
+}
+
+int QmlUnitTestRunner::exec() {
+    setup();
+    return app->exec();
+}
+
+void QmlUnitTestRunner::findTests(QString path) {
+    if (isTest(path)) {
+        tests << path;
+        return;
+    }
+
+    QStringList filters; filters << "*";
+    QDir dir = QDir(QDir(path).absolutePath());
+
+    QListIterator<QFileInfo> files(dir.entryInfoList(filters, QDir::AllEntries | QDir::NoDotAndDotDot));
+    while(files.hasNext()) {
+        QFileInfo file = files.next();
+        if (file.fileName() == "." || file.fileName() == "..") continue;
+
+        if (isTest(file))
+            tests << file.absoluteFilePath();
+        else if (isDir(file))
+            findTests(file.absoluteFilePath());
+    }
+}
+
+bool QmlUnitTestRunner::isTest(QFileInfo file){
+    return isTest(file.fileName());
+}
+
+bool QmlUnitTestRunner::isTest(QString filePath){
+    return filePath.endsWith("Test.qml");
+}
+
+bool QmlUnitTestRunner::isDir(QFileInfo file){
+    return QDir(file.absoluteFilePath()).exists();
+}
