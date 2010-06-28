@@ -46,4 +46,5 @@ OTHER_FILES += \
     lib/QUnitTestSuite.qml \
     scripts/QUnitTestSuite.js \
     components/QmlLogger.qml \
-    TestRunner.qml
+    TestRunner.qml \
+    QmlUnit/qmldir

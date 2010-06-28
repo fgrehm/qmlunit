@@ -24,7 +24,7 @@ Item {
         testsInput.each(function(t){
             var folder = t.substring(0, t.lastIndexOf('/'));
             var testCase = t.substring(t.lastIndexOf('/') + 1, t.lastIndexOf('.qml'));
-            var relativeFilePath = t.substring(currentPath.length);
+            var relativeFilePath = t.replace(currentPath, "");
 
             Qt.createQmlObject('import Qt 4.7; import "' + folder + '"; ' + testCase + ' { name: "' + relativeFilePath + '" }', runner, testCase);
         });

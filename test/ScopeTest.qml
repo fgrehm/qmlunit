@@ -1,5 +1,5 @@
 import Qt 4.7
-import "../lib"
+import QmlUnit 0.1
 
 QmlTestCase {
     property string foo

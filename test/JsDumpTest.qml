@@ -1,10 +1,10 @@
 import Qt 4.7
-import "../lib"
-import "../scripts/qmlunit.js" as QmlUnit
+import QmlUnit 0.1
+import "../scripts/qmlunit.js" as QmlUnitJS
 
 QmlTestCase {
     function test_jsDump_output() {
-        equals( QmlUnit.QUnit.jsDump.parse([1, 2]), "[ 1, 2 ]" );
-        equals( QmlUnit.QUnit.jsDump.parse({top: 5, left: 0}), "{ \"top\": 5, \"left\": 0 }" );
+        equals( QmlUnitJS.QUnit.jsDump.parse([1, 2]), "[ 1, 2 ]" );
+        equals( QmlUnitJS.QUnit.jsDump.parse({top: 5, left: 0}), "{ \"top\": 5, \"left\": 0 }" );
     }
 }

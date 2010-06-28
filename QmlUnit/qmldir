@@ -1,0 +1,2 @@
+QmlTestCase 0.1 ../lib/QmlTestCase.qml
+QUnitTestSuite 0.1 ../lib/QUnitTestSuite.qml

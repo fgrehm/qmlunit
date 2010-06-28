@@ -36,6 +36,7 @@ void QmlUnitTestRunner::setup(){
     QDeclarativeEngine *engine = logger->engine();
 
     engine->setOfflineStoragePath(QDir::currentPath() + "/storage");
+    engine->addImportPath(QDir::currentPath() + "/QmlUnit");
     engine->rootContext()->setContextProperty("testsInput", tests);
     engine->rootContext()->setContextProperty("currentPath", QDir::currentPath());
 
@@ -49,7 +50,7 @@ int QmlUnitTestRunner::exec() {
 
 void QmlUnitTestRunner::findTests(QString path) {
     if (isTest(path)) {
-        tests << path;
+        tests << QDir(path).absolutePath();
         return;
     }
 
