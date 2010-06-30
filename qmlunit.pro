@@ -9,6 +9,8 @@ QT          += core gui declarative sql
 TARGET = qmlunit
 TEMPLATE = app
 
+macx:CONFIG-=app_bundle
+
 
 SOURCES += main.cpp\
     qmlunittestrunner.cpp \

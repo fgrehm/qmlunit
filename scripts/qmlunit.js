@@ -378,13 +378,13 @@ var QUnit = {
 //	/**
 //	 * Resets the test setup. Useful for tests that modify the DOM.
 //	 */
-//	reset: function() {
-//		if ( window.jQuery ) {
-//			jQuery("#main").html( config.fixture );
-//			jQuery.event.global = {};
-//			jQuery.ajaxSettings = extend({}, config.ajaxSettings);
-//		}
-//	},
+	reset: function() {
+		if ( window.jQuery ) {
+			jQuery("#main").html( config.fixture );
+			jQuery.event.global = {};
+			jQuery.ajaxSettings = extend({}, config.ajaxSettings);
+		}
+	},
 
 //	/**
 //	 * Trigger an event on an element.
