@@ -231,6 +231,8 @@ on Ubuntu 10.04 and depends on:
 
 *   Qt compiled with declarative ui enabled.
 
+[Henrik Hartz](http://github.com/hhartz) has made QmlUnit compatible with Mac so
+it might work there as well.
 
 Bugs and Contributions
 ----------------------
@@ -239,7 +241,8 @@ If you find a bug, please [report it](http://github.com/fgrehm/qmlunit) or fork 
 project, fix the problem and send me a pull request.
 
 Thanks goes to [John Resig](http://github.com/jeresig) and other [QUnit contributors](
-http://github.com/jquery/qunit/contributors) for their work on QUnit.
+http://github.com/jquery/qunit/contributors) for their work on QUnit and to [Henrik Hartz](
+http://github.com/hhartz) for making QmlUnit compatible with Mac.
 
 
 TODO
