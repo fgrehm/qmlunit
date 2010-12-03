@@ -1,6 +1,7 @@
 import Qt 4.7
 import "scripts/support.js" as Support
 import "scripts/qmlunit.js" as QmlUnit
+import "scripts/QUnitTestXmlLogger.js" as XUnitLogger
 
 Item {
     id: runner
@@ -36,10 +37,25 @@ Item {
 
         if(logger.testCaseStart)
             QmlUnit.QUnit.moduleStart = logger.testCaseStart;
-
+          
         if(logger.testFinished)
             QmlUnit.QUnit.testDone = logger.testFinished;
 
+        // Initialize xml log output
+        {
+          QmlUnit.QUnit.moduleStart = function(name) {
+            XUnitLogger.addTestSuite(name)
+            logger.testCaseStart(name); // Chain to original implementation
+          }
+            
+          QmlUnit.QUnit.testDone = function(testName, failures, totalAssertions, assertions) {
+            XUnitLogger.addTestCase(XUnitLogger.currentTestSuite, testName, totalAssertions, failures, assertions)
+            logger.testFinished(testName, failures, totalAssertions, assertions); // Chain to original implementation
+          }
+          
+          QmlUnit.QUnit.done = function() {XUnitLogger.printTestResultsInXUnitFormat(console)}
+        }
+        
         initializeTests();
 
         QmlUnit.window.setTimeout = runner.setTimeout;

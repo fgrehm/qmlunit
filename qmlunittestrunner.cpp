@@ -12,9 +12,19 @@ QmlUnitTestRunner::QmlUnitTestRunner(QApplication *app) :
     QStringList args = app->arguments();
     // Skips executable
     args.removeAt(0);
-
+    
+    // Parse possible xmlUnitOutput arg
+    bool xmlOutput = false;
+    
+    if ((args.count() > 0) && args.contains("-xml")) {
+        xmlOutput = true;
+        args.removeAt(args.indexOf("-xml"));
+    }
+    
     if (args.count() == 0) {
-        qDebug() << "No arguments passed, failing back to qmlunit Test Suite (" << (app->applicationDirPath() + "/test") << ")\n";
+        // Surpress all non-xml output if xml output was requested
+        if (!xmlOutput) 
+          qDebug() << "No arguments passed, failing back to qmlunit Test Suite (" << (app->applicationDirPath() + "/test") << ")\n";
         args = QStringList(app->applicationDirPath() + "/test");
     }
 
@@ -23,10 +33,14 @@ QmlUnitTestRunner::QmlUnitTestRunner(QApplication *app) :
         findTests(i.next());
 
     i = QStringListIterator(tests);
-    qDebug() << "Tests files found:";
-    while(i.hasNext()) {
-        QString currentArg = i.next();
-        qDebug() << "\t" << currentArg;
+    
+    // Surpress all non-xml output if xml output was requested
+    if (!xmlOutput) {
+      qDebug() << "Tests files found:";
+      while(i.hasNext()) {
+          QString currentArg = i.next();
+          qDebug() << "\t" << currentArg;
+      }
     }
 }
 
